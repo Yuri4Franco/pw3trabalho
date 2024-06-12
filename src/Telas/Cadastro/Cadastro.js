@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { notifyError } from '../../Utils/ToastUtil';
+import { notifyError } from '../../utils/ToastUtil';
 
 const Cadastro = () => {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [nome, setNome] = useState('Testador gratuíto');
+  const [email, setEmail] = useState('teste@gmail.com');
+  const [password, setPassword] = useState('1234');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {

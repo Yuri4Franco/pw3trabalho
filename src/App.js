@@ -2,12 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
-import Home from './Telas/Home/Home'
-import Cadastro from './Telas/Cadastro/Cadastro';
-import Login from './Telas/Login/Login';
-import Dashboard from './Telas/Dashboard/Dashboard';
-import CadastroImoveis from './Telas/Cadastro/CadastroImoveis';
-
+import Home from './telas/home/home'
+import Cadastro from './telas/cadastro/cadastro';
+import Login from './telas/login/login';
+import Dashboard from './telas/dashboard/dashboard';
+import CadastroImoveis from './telas/cadastro/cadastroImoveis';
+import { AuthProvider } from './auth/AuthContext';
 import {
   BrowserRouter as Router,
   Routes,
@@ -18,16 +18,17 @@ import {
 
 function App() {
   return (
-
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/cadastro" element={<Cadastro />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/CadastroImoveis" element={<CadastroImoveis />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/CadastroImoveis" element={<CadastroImoveis />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

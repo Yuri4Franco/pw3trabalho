@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TailSpin } from 'react-loader-spinner';
 import axios from 'axios';
@@ -6,37 +6,58 @@ import axios from 'axios';
 const CadastroImoveis = () => {
   const navigate = useNavigate();
   const [spinner, setSpinner] = useState(false);
-  const [descricao, setDescricao] = useState('');
-  const [quartos, setQuartos] = useState('');
-  const [vagas, setVagas] = useState('');
+  const [descricao, setDescricao] = useState('Casa');
+  const [quartos, setQuartos] = useState(1);
+  const [vagas, setVagas] = useState(2);
   const [imagem, setImagem] = useState(null);
+  const [usuarioId, setUsuarioId] = useState(null);
+
+  useEffect(() => {
+    const usuario_id = localStorage.getItem('usuario_id');
+    const token = localStorage.getItem('token');
+    if (!usuario_id || !token) {
+      alert('Usuário não autenticado. Por favor, faça login.');
+      navigate('/login');
+    } else {
+      console.log('usuario_id recuperado:', usuario_id); // Adicione esta linha para depuração
+      setUsuarioId(parseInt(usuario_id, 10));
+    }
+  }, [navigate]);
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const userId = localStorage.getItem('userId'); // Recupera o ID do usuário do localStorage
-    const token = localStorage.getItem('token'); // Recupera o token do localStorage
+
+    if (!descricao || !quartos || !vagas || !usuarioId || !imagem) {
+      alert('Preencha todos os campos obrigatórios');
+      return;
+    }
 
     try {
       setSpinner(true);
       const formData = new FormData();
       formData.append('descricao', descricao);
-      formData.append('quartos', quartos);
-      formData.append('vagas', vagas);
+      formData.append('quartos', parseInt(quartos, 10));
+      formData.append('vagas', parseInt(vagas, 10));
       formData.append('imagem', imagem);
-      formData.append('userId', userId); // Adiciona o ID do usuário ao formulário
+      formData.append('usuario_id', usuarioId);
 
-      const response = await axios.post('http://localhost:8080/public/cadastro-imoveis', formData, {
+      const response = await axios.post('http://localhost:8080/imoveis', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}` // Adiciona o token no cabeçalho
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
       });
 
-      if (response.status === 200) {
-        navigate('/sucesso');
+      if (response.status === 201) {
+        alert('Imovel Cadastrado com sucesso');
+        navigate('/dashboard');
+      } else {
+        alert('Erro ao cadastrar imóvel');
       }
     } catch (error) {
-      console.error(error);
+      console.error('Erro ao cadastrar imóvel:', error);
+      alert('Erro ao cadastrar imóvel');
     } finally {
       setSpinner(false);
     }
@@ -66,7 +87,7 @@ const CadastroImoveis = () => {
                 className="form-control"
                 id="quartos"
                 value={quartos}
-                onChange={(e) => setQuartos(e.target.value)}
+                onChange={(e) => setQuartos(parseInt(e.target.value, 10))}
                 required
               />
             </div>
@@ -77,7 +98,7 @@ const CadastroImoveis = () => {
                 className="form-control"
                 id="vagas"
                 value={vagas}
-                onChange={(e) => setVagas(e.target.value)}
+                onChange={(e) => setVagas(parseInt(e.target.value, 10))}
                 required
               />
             </div>

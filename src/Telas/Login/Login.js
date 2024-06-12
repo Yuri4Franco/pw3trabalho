@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { TailSpin } from 'react-loader-spinner';
-import { notifyError } from '../../Utils/ToastUtil';
+import { notifyError } from '../../utils/ToastUtil';
 
 const Login = () => {
   const [email, setEmail] = useState('teste@gmail.com');
@@ -18,11 +18,11 @@ const Login = () => {
         email: email,
         password: password
       });
-      const { token, userId } = response.data; // Supondo que o ID do usuário também é retornado
+      const { token, userId } = response.data;
 
       if (token) {
         localStorage.setItem('token', token);
-        localStorage.setItem('userId', userId); // Armazena o ID do usuário
+        localStorage.setItem('usuario_id', userId); // Armazena o usuario_id no localStorage
         navigate('/dashboard');
       }
     } catch (error) {
@@ -48,7 +48,7 @@ const Login = () => {
                 id="email"
                 aria-describedby="emailHelp"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <div id="emailHelp" className="form-text">Não se preocupe, o seu e-mail está muito seguro 🫠</div>
@@ -60,7 +60,7 @@ const Login = () => {
                 className="form-control"
                 id="password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>

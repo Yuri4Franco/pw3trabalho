@@ -13,17 +13,15 @@ const CadastroImoveis = () => {
   const [usuarioId, setUsuarioId] = useState(null);
 
   useEffect(() => {
-    const usuario_id = localStorage.getItem('usuario_id');
     const token = localStorage.getItem('token');
-    if (!usuario_id || !token) {
+    const storedUserId = localStorage.getItem('usuario_id'); // Obtém o userId do localStorage
+    if (!token || !storedUserId) {
       alert('Usuário não autenticado. Por favor, faça login.');
       navigate('/login');
     } else {
-      console.log('usuario_id recuperado:', usuario_id); // Adicione esta linha para depuração
-      setUsuarioId(parseInt(usuario_id, 10));
+      setUsuarioId(storedUserId); // Define o userId a partir do localStorage
     }
   }, [navigate]);
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,6 +39,14 @@ const CadastroImoveis = () => {
       formData.append('vagas', parseInt(vagas, 10));
       formData.append('imagem', imagem);
       formData.append('usuario_id', usuarioId);
+
+      console.log('Enviando dados:', {
+        descricao,
+        quartos: parseInt(quartos, 10),
+        vagas: parseInt(vagas, 10),
+        usuario_id: usuarioId,
+        imagem: imagem.name
+      });
 
       const response = await axios.post('http://localhost:8080/imoveis', formData, {
         headers: {

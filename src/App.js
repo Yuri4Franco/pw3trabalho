@@ -7,6 +7,8 @@ import Cadastro from './telas/cadastro/cadastro';
 import Login from './telas/login/login';
 import Dashboard from './telas/dashboard/dashboard';
 import CadastroImoveis from './telas/cadastro/cadastroImoveis';
+import ListaImoveis from './componentes/ListaImoveis';
+
 import { AuthProvider } from './auth/AuthContext';
 import {
   BrowserRouter as Router,
@@ -26,6 +28,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/CadastroImoveis" element={<CadastroImoveis />} />
+          <Route path="/ListaImoveis" element={<ListaImoveis />} />
         </Routes>
       </Router>
     </AuthProvider>
